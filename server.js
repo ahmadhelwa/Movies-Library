@@ -12,6 +12,22 @@ app.listen(port, () => {
 })
 
 app.get('/', handelhome);
+app.get('/favorite', handelfavorite)
+
+// function error
+app.use(function (err, req, res, text) {
+  console.log(err.stack);
+  res.type('taxt/plain');
+  res.status(500);
+  res.send('Sorry, something went wrong');
+})
+
+app.use(function (req, res, text) {
+  res.status(404);
+  res.type('text/plain');
+  res.send('Not found');
+});
+
 
 function handelhome(req,res)
 {
@@ -20,11 +36,6 @@ let data1 = new Data(data.title,data.poster_path ,data.overview)
 result.push(data1);
 res.json(result);
 }
-
-app.get('/', handelhome);
-
-
-
 
 function Data(title,poster_path,overview)
 {

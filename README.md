@@ -13,14 +13,29 @@ Add an image of your WRRC here
 
 ## Getting Started
 
+Create a repository
+
+Create a new branch
+
+Create file server.js
+
 command "npm init -y" -> add file package.json
 
-Install the required packages --  command  npm install express 
+Install the required packages -- command npm install express
 
-run the server --  command  node name js file 
+Create a function error 404 and 500
+
+Create a constructor function
+
+run the server -- command node name js file
+
+
+## tree 
+
+
+!["wrrc"](./tree3.PNG)
 
 ## Project Features
-<!-- What are the features included in you app -->
 
 What observations or questions do you have about what you’ve learned so far?
 nothing
