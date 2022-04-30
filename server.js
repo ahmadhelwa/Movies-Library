@@ -90,9 +90,10 @@ const  url = `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}`;
 
 
 function hundleSearch(req, res) {
-  let id = req.query.id;
-  let url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${id}&language=en-US&page=2`;
-     axios.get(url)
+  let name = req.query.name;
+  let url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${name}&language=en-US&page=2`;
+     axios
+     .get(url)
     .then(showData => {
      res.json(showData.data.results)
     })
