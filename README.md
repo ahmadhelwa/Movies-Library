@@ -4,8 +4,8 @@
 
 **Author Name**: Ahmad Helwa
 
-## WRRC
-Add an image of your WRRC here
+   ## WRRC
+
 !["wrrc"](./img/wrrc.jpg)
 
 
@@ -29,7 +29,6 @@ Create a constructor function
 run the server --  command  node name js file 
 
 ## Project Features
-<!-- What are the features included in you app -->
 
 What observations or questions do you have about what you’ve learned so far?
 nothing
@@ -38,7 +37,7 @@ nothing
 How long did it take you to complete this assignment? And, before you started, how long did you think it would take you to complete this assignment? 2hour 
 
 
-## Update documentation 
+## Update documentation (12)
  Create a new branch
 
  Install packages axios dotenv 
@@ -46,6 +45,8 @@ How long did it take you to complete this assignment? And, before you started, h
  create a file .env and put my ApiKey
 
  Create functions to handle route from Movie DB Documentation
+
+!["wrrc"](./img/api.jpg)
 
 
 ### Tree in vs
@@ -62,3 +63,32 @@ nothing
 
 How long did it take you to complete this assignment? And, before you started, how long did you think it would take you to complete this assignment?  8hour 
 
+## Update documentation (13)
+Creating the database
+
+create a schema.sql file in my project
+
+Connecting the database with the table (psql -d nameDB -f schema.sql)
+
+pg client library for Node
+
+Save INSERT records to the database (post)
+
+Read SELECT records from the database (get)
+
+!["wrrc"](./img/DB.jpg)
+
+### Tree in terminal
+
+!["tree"](./img/tree.PNG)
+
+
+
+
+
+
+What observations or questions do you have about what you’ve learned so far?
+nothing
+
+
+How long did it take you to complete this assignment? And, before you started, how long did you think it would take you to complete this assignment?  4hour 

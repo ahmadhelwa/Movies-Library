@@ -6,59 +6,65 @@ const express = require('express');
 
 const cors = require('cors');
 
+const bodyparser = require('body-parser');
+
 // const data =require('./Movie Data//data.json');
 
 const axios = require('axios').default;
 
 const app = express();
 
-
 app.use(cors());
 
+app.use(bodyparser.urlencoded( { extended : false }));
+app.use(bodyparser.json())
 
 const port = 3000 ;
 
-// check server
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-});
+app.post("/addMovie" , handleAdd);
+app.get("/getMovie" , handleGet);
+
+const pass = process.env.Pass;
+
+const url = `postgres://ahmadhelwa:${pass}@localhost:5432/movie` ;
+
+const { Client } = require('pg'); // to sql inside js file
+const client = new Client(url);
 
 
-// my api Key
-const apiKey = process.env.ApiKey;
+// app.listen(port, () => { console.log(`Example app listening on port ${port}`)});
+  
+  
+  // my api Key
+  const apiKey = process.env.ApiKey;
+ 
+
+  
+  // routes
+  app.use(hundleNotFound);
+  app.get('/trending', hundleTrending);
+  app.get('/search', hundleSearch);
+  app.get('/popular', hundlePopular);
+  app.get('/id', hundleId);
+  // app.get('*' ,hundleNotFound) // error
+  
+  
+  
+  // error 500
+
+// app.use(function (err, req, res, text) {
+//   console.log(err.stack);
+//   res.type('taxt/plain');
+//   res.status(500);
+//   res.send('Sorry, something went wrong');
+// })
 
 
-
-
-
-
-
-
-
-
-
-// routes
-app.get('/trending', hundleTrending);
-app.get('/search', hundleSearch);
-app.get('/popular', hundlePopular);
-app.get('/id', hundleId);
-app.get('*' ,hundleNotFound) // error
-
-
-
-// error 500
-
-app.use(function (err, req, res, text) {
-  console.log(err.stack);
-  res.type('taxt/plain');
-  res.status(500);
-  res.send('Sorry, something went wrong');
-})
 // error 404
 function hundleNotFound(req,res)
 {
 
-  res.status(404).send(" page not found ");
+  res.status(500).send(" page not 1 found ");
 
 }
 
@@ -146,20 +152,62 @@ function Movie(id, title, release_date, poster_path, overview) {
 
 
 
+// function get $ post
+
+function handleAdd(req, res) {
+
+  const { name , id  , result } = req.body ; 
+
+  let sql = 'INSERT INTO movie(name,id,result) VALUES($1, $2, $3) RETURNING *;' 
+
+  let values = [name, id, result];
+
+  client.query(sql, values)
+  .
+  then((result) => {
+   
+    console.log(result.rows);
+   
+    return res.status(201).json(result.rows[0]);  
+  })
+  .catch()
+}
+
+function handleGet(req ,res)
+{
+
+let sql = 'SELECT * from movie;'  
+
+client.query(sql)
+
+.then ( result => 
+  {
+
+    res.json(result.rows);
+
+  }
+  )
+  .catch
+    (
+  
+      (err) =>
+     { hundleNotFound (err ,req ,res) }
+
+     )
+
+}
 
 
 
+// after connection to db , start the server 
+client.connect().then(()=> 
+{
 
 
+app.listen(port, ()=> {console.log(`server is listening ${port}`)})
 
 
-
-
-
-
-
-
-
+} );
 
 
 
@@ -196,4 +244,4 @@ function Movie(id, title, release_date, poster_path, overview) {
 
 // console.log(res.send("Welcome to Favorite Page"))
 
-// }
+// 
