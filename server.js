@@ -23,11 +23,15 @@ const port = 3000 ;
 
 app.post("/addMovie" , handleAdd);
 app.get("/getMovie" , handleGet);
+app.get("/getMoviebyid/:byid" , handleGetbyid);
+app.put("/updateMovie/:updatemovie" , handleupdate);
+app.delete("/deleteMovie" ,handleDelete)
+
 
 const pass = process.env.Pass;
 
+// db
 const url = `postgres://ahmadhelwa:${pass}@localhost:5432/movie` ;
-
 const { Client } = require('pg'); // to sql inside js file
 const client = new Client(url);
 
@@ -60,13 +64,6 @@ const client = new Client(url);
 // })
 
 
-// error 404
-function hundleNotFound(req,res)
-{
-
-  res.status(500).send(" page not 1 found ");
-
-}
 
 // functions 
 
@@ -74,20 +71,20 @@ function hundleTrending(req ,res)
 {
 const  url = `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}`;
 
-     axios.get(url)
+axios.get(url)
     .then(showData => {
-     console.log(showData);
-     let trendall = showData.data.results.map(trend => {
+      console.log(showData);
+      let trendall = showData.data.results.map(trend => {
        
-         return new Movie ( trend.id, trend.title, trend.release_date, trend.poster_path, trend.overview);
-      
-        })
+        return new Movie ( trend.id, trend.title, trend.release_date, trend.poster_path, trend.overview);
+        
+      })
       res.json(trendall);
       
 
     })
    
-     .catch((error) => {
+    .catch((error) => {
       console.log(error);
       res.send("Inside catch")
     })
@@ -103,7 +100,7 @@ function hundleSearch(req, res) {
     .then(showData => {
      res.json(showData.data.results)
     })
-     .catch((error) => {
+    .catch((error) => {
       console.log(error);
       res.send("inside data")
     })
@@ -115,7 +112,7 @@ function hundleSearch(req, res) {
 function hundlePopular(req, res) {
 
   let url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=2`;
-
+  
   axios.get(url)
     .then(showData => {
        res.json(showData.data)
@@ -156,18 +153,18 @@ function Movie(id, title, release_date, poster_path, overview) {
 
 function handleAdd(req, res) {
 
-  const { name , id  , result } = req.body ; 
+  const { name  , result } = req.body ; 
 
-  let sql = 'INSERT INTO movie(name,id,result) VALUES($1, $2, $3) RETURNING *;' 
+  let sql = 'INSERT INTO movie(name,result) VALUES($1, $2) RETURNING *;' 
 
-  let values = [name, id, result];
-
+  let values = [name,  result];
+  
   client.query(sql, values)
-  .
-  then((result) => {
+  
+  .then((result) => {
    
     console.log(result.rows);
-   
+    
     return res.status(201).json(result.rows[0]);  
   })
   .catch()
@@ -196,21 +193,97 @@ client.query(sql)
      )
 
 }
+function handleGetbyid(req,res)
+{
+  const {byid} = req.params;
+
+  let sql = 'SELECT * from movie WHERE id=$1;'
+  let value = [byid] ; 
+
+client.query(sql,value)
+  
+  .then ( result => 
+    {
+  
+      res.json(result.rows);
+  
+    }
+    )
+    .catch
+      (
+    
+        (err) =>
+       { hundleNotFound (err ,req ,res) }
+  
+       )
+  
+
+}
+function handleupdate(req,res)
+{
+const {updatemovie} = req.params ;
+const { name ,  result } = req.body ; 
+let sql = `UPDATE movie  SET name =$1 , result=$2  WHERE  id = $3 RETURNING *;`
+let values = [name, result , updatemovie ];
+
+client.query(sql,values).then(result=>
+  {
+
+res.send("working")
+
+
+  })
+
+
+}
+
+
+
+function handleDelete(req,res)
+{
+
+const deleteMovie = req.query.id
+let sql = 'DELETE from movie WHERE id=$1;' 
+let value = [deleteMovie]
+client.query(sql, value).then(result => {
+  console.log(result);
+  res.send("deleted");
+})
+.catch();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 // after connection to db , start the server 
 client.connect().then(()=> 
 {
-
-
-app.listen(port, ()=> {console.log(`server is listening ${port}`)})
-
-
+  app.listen(port, ()=> {console.log(`server is listening http://localhost:${port}`)})
 } );
 
 
 
+
+function hundleNotFound(req,res)
+{
+
+  res.status(500).send(" page not 1 found ");
+
+}
 
 
 // app.get('/', handelhome);
@@ -223,15 +296,11 @@ app.listen(port, ()=> {console.log(`server is listening ${port}`)})
 // res.json(result);
 // }
 
-// app.get('/', handelhome);
-
-
-
 
 // function Data(title,poster_path,overview)
 // {
-
-// this.title =title;
+  
+  // this.title =title;
 // this.poster_path= poster_path;
 // this.overview= overview;
 

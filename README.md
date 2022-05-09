@@ -92,3 +92,32 @@ nothing
 
 
 How long did it take you to complete this assignment? And, before you started, how long did you think it would take you to complete this assignment?  4hour 
+
+
+
+## Update documentation (14)
+
+ Create  put and delete  requests 
+
+ UPDATE a record in the database
+
+ Delete a record from the database
+
+ Create route getbyID  
+
+
+
+!["db"](./img/db%20(2).jpg)
+
+!["tree"](./img/tree.PNG)
+
+
+
+
+
+
+What observations or questions do you have about what you’ve learned so far?
+nothing
+
+
+How long did it take you to complete this assignment? And, before you started, how long did you think it would take you to complete this assignment?  2hour 
