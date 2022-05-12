@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const bodyparser = require('body-parser');
 
-// const data =require('./Movie Data//data.json');
+const data =require('./Movie Data//data.json');
 
 const axios = require('axios').default;
 
@@ -29,7 +29,8 @@ app.use(bodyparser.urlencoded( { extended : false }));
 app.use(bodyparser.json())
 
 const port = process.env.PORT ;
-
+app.get('/', handelhome);
+app.get('/favorite', handelfavorite)
 app.post("/addMovie" , handleAdd);
 app.get("/getMovie" , handleGet);
 app.get("/getMoviebyid/:byid" , handleGetbyid);
@@ -43,7 +44,6 @@ app.delete("/deleteMovie" ,handleDelete)
 
 
 
-// app.listen(port, () => { console.log(`Example app listening on port ${port}`)});
   
   
   // my api Key
@@ -52,11 +52,12 @@ app.delete("/deleteMovie" ,handleDelete)
 
   
   // routes
-  app.use(hundleNotFound);
   app.get('/trending', hundleTrending);
   app.get('/search', hundleSearch);
   app.get('/popular', hundlePopular);
   app.get('/id', hundleId);
+  app.use('*',hundleNotFound);
+
   // app.get('*' ,hundleNotFound) // error
   
   
@@ -285,15 +286,9 @@ client.connect().then(()=>
 
 
 
-function hundleNotFound(req,res)
-{
-
-  res.status(500).send(" page not 1 found ");
-
-}
 
 
-app.get('/', handelhome);
+
 
 function handelhome(req,res)
 {
@@ -303,22 +298,28 @@ result.push(data1);
 res.json(result);
 }
 
-
 function Data(title,poster_path,overview)
 {
-  
-  this.title =title;
+
+this.title =title;
 this.poster_path= poster_path;
 this.overview= overview;
 
 }
 
-app.get('/favorite', handelfavorite)
 
 function handelfavorite(req,res)
 {
 
 console.log(res.send("Welcome to Favorite Page"))
 
+}
+
+
+
+function hundleNotFound(req,res)
+{
+
+  res.status(500).send(" page not 1 found ");
 
 }
