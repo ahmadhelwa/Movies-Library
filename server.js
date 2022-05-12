@@ -14,12 +14,21 @@ const axios = require('axios').default;
 
 const app = express();
 
+
+const url = `postgres://ahmadhelwa:1234@localhost:5432/movie` ;
+const { Client } = require('pg'); // to sql inside js file
+// const client = new Client(url);
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
 app.use(cors());
 
 app.use(bodyparser.urlencoded( { extended : false }));
 app.use(bodyparser.json())
 
-const port = 3000 ;
+const port = process.env.PORT ;
 
 app.post("/addMovie" , handleAdd);
 app.get("/getMovie" , handleGet);
@@ -28,12 +37,10 @@ app.put("/updateMovie/:updatemovie" , handleupdate);
 app.delete("/deleteMovie" ,handleDelete)
 
 
-const pass = process.env.Pass;
+// const pass = process.env.Pass;
 
 // db
-const url = `postgres://ahmadhelwa:${pass}@localhost:5432/movie` ;
-const { Client } = require('pg'); // to sql inside js file
-const client = new Client(url);
+
 
 
 // app.listen(port, () => { console.log(`Example app listening on port ${port}`)});
