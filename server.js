@@ -17,7 +17,7 @@ const app = express();
 const port = process.env.PORT;
 const apiKey = process.env.ApiKey;
 
-//
+// 
 
 const url = `postgres://ahmadhelwa:1234@localhost:5432/movie`;
 
@@ -135,11 +135,11 @@ function hundleId(req, res) {
 // function get & post
 
 function handleAdd(req, res) {
-  const { name, result } = req.body;
+  const { title,  release_date, poster_path , overview , comment } = req.body;
 
-  let sql = "INSERT INTO movie(name,result) VALUES($1, $2) RETURNING *;";
+  let sql = "INSERT INTO movie(title,  release_date, poster_path , overview , comment ) VALUES($1, $2 , $3 , $4 ,$5 ) RETURNING *;";
 
-  let values = [name, result];
+  let values = [title,  release_date, poster_path , overview , comment ];
 
   client
     .query(sql, values)
@@ -183,9 +183,9 @@ function handleGetbyid(req, res) {
 }
 function handleupdate(req, res) {
   const { updatemovie } = req.params;
-  const { name, result } = req.body;
-  let sql = `UPDATE movie  SET name =$1 , result=$2  WHERE  id = $3 RETURNING *;`;
-  let values = [name, result, updatemovie];
+  const { title,  release_date, poster_path , overview , comment  } = req.body;
+  let sql = `UPDATE movie  SET title =$1 , release_date=$2 , poster_path=$3  WHERE  id = $4 RETURNING *;`;
+  let values = [title, release_date, updatemovie];
 
   client.query(sql, values).then((result) => {
     res.send("working");
