@@ -200,7 +200,7 @@ function handleDelete(req, res) {
     .query(sql, value)
     .then((result) => {
       console.log(result);
-      res.send("deleted");
+      res.status(204);
     })
     .catch();
 }
